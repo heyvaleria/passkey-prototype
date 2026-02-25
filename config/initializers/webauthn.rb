@@ -1,8 +1,8 @@
 WebAuthn.configure do |config|
   # This value needs to match `window.location.origin` evaluated by
   # the User Agent during registration and authentication ceremonies.
-  # config.allowed_origins = [ "https://auth.example.com" ]
+  config.allowed_origins = [ "http://localhost:3000" ]
 
   # Relying Party name for display purposes
-  # config.rp_name = "Example Inc."
+  config.rp_name = "Example Inc."
 end

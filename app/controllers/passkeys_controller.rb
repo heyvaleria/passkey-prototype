@@ -29,16 +29,18 @@ class PasskeysController < ApplicationController
       credential = Current.user.passkeys.find_or_initialize_by(
         external_id: webauthn_credential.id
       )
+      nickname = create_credential_params[:nickname].presence || "Passkey"
 
       if credential.update(
-          nickname: create_credential_params[:nickname],
+          nickname: nickname,
           public_key: webauthn_credential.public_key,
-          sign_count: webauthn_credential.sign_count
+          sign_count: webauthn_credential.sign_count,
+          authentication_factor: 0
       )
         redirect_to root_path, notice: "Passkey registered successfully"
       else
-        flash[:alert] = "Error registering credential"
-        render :new
+        flash.now[:alert] = credential.errors.full_messages.to_sentence
+        render :new, status: :unprocessable_entity
       end
     rescue WebAuthn::Error => e
       redirect_to new_passkey_path, alert: "Verification failed: #{e.message}"

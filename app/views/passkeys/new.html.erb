@@ -1,0 +1,32 @@
+
+<% if flash[:alert].present? %>
+  <div style="padding: 12px; border: 1px solid #ccc; margin-bottom: 12px;">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+<h1>Add a Passkey</h1>
+
+<%= form_with url: passkeys_path, method: :post,
+              data: {
+                controller: "webauthn-credentials",
+                "webauthn-credentials-options-url-value": create_options_passkeys_path
+              } do %>
+
+  <div>
+    <label for="credential_nickname">Nickname (optional)</label>
+    <input id="credential_nickname" name="credential[nickname]" type="text" />
+  </div>
+
+  <input
+    type="hidden"
+    name="credential[public_key_credential]"
+    value=""
+    data-webauthn-credentials-target="credentialHiddenInput" />
+
+  <button
+    type="button"
+    data-webauthn-credentials-target="submitButton"
+    data-action="click->webauthn-credentials#create">
+    Create Passkey
+  </button>
+<% end %>
