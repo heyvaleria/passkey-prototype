@@ -1,4 +1,7 @@
 class SecondFactorWebauthnCredentialsController < ApplicationController
+  def new
+  end
+
   def create_options
     create_options = WebAuthn::Credential.options_for_create(
       user: {
@@ -29,10 +32,14 @@ class SecondFactorWebauthnCredentialsController < ApplicationController
         external_id: webauthn_credential.id
       )
 
+      nickname = create_credential_params[:nickname].presence || "2FA Passkey"
+
+
       if credential.update(
-          nickname: create_credential_params[:nickname],
+          nickname: nickname,
           public_key: webauthn_credential.public_key,
-          sign_count: webauthn_credential.sign_count
+          sign_count: webauthn_credential.sign_count,
+          authentication_factor: 1
       )
         redirect_to root_path, notice: "Security Key registered successfully"
       else

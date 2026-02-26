@@ -3,12 +3,13 @@
     <%= flash[:alert] %>
   </div>
 <% end %>
-<h1>Add a Passkey</h1>
+<h1>Add a 2FA Passkey</h1>
 
-<%= form_with url: passkeys_path, method: :post,
+<%= form_with url: second_factor_webauthn_credentials_path,
+              method: :post,
               data: {
                 controller: "webauthn-credentials",
-                "webauthn-credentials-options-url-value": create_options_passkeys_path
+                "webauthn-credentials-options-url-value": create_options_second_factor_webauthn_credentials_path
               } do %>
 
   <div>
@@ -26,6 +27,6 @@
     type="button"
     data-webauthn-credentials-target="submitButton"
     data-action="click->webauthn-credentials#create">
-    Create Passkey
+    Create 2FA Passkey
   </button>
 <% end %>
